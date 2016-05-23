@@ -1,2 +1,6 @@
 LIBRARY "Asm"
 EXPORTS
+
+asmAddTwoDoubles
+asmAddFourDoubles
+asmStructOperation
