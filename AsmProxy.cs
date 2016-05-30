@@ -4,27 +4,35 @@ namespace WpfUI {
     public unsafe class AsmProxy
     {
         [DllImport("Asm.dll")]
-        private static extern double asmAddTwoDoubles(double a, double b);
+        private static extern void asmBlackAndWhite(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters);
 
         [DllImport("Asm.dll")]
-        private static extern double asmAddFourDoubles(double a, double b, double c, double d);
+        private static extern void asmBlurAndSharpening(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters);
 
         [DllImport("Asm.dll")]
-        private static extern MainWindow.TempStruct* asmStructOperation(MainWindow.TempStruct* s);
+        private static extern void asmContrastAndBrightness(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters);
 
-        public double executeAsmAddTwoDoubles(double a, double b)
+        [DllImport("Asm.dll")]
+        private static extern void asmSepia(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters);
+
+        public void executeAsmBlackAndWhite(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
         {
-            return asmAddTwoDoubles(a, b);
+            asmBlackAndWhite(inputImage, outputImage, imageInfo, parameters);
         }
 
-        public double executeAsmAddFourDoubles(double a, double b, double c, double d)
+        public void executeAsmBlurAndSharpening(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
         {
-            return asmAddFourDoubles(a, b, c, d);
+            asmBlurAndSharpening(inputImage, outputImage, imageInfo, parameters);
         }
 
-        public MainWindow.TempStruct executeAsmStructOperation(MainWindow.TempStruct s)
+        public void executeAsmContrastAndBrightness(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
         {
-            return *asmStructOperation(&s);
+            asmContrastAndBrightness(inputImage, outputImage, imageInfo, parameters);
+        }
+
+        public void executeAsmSepia(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
+        {
+            asmSepia(inputImage, outputImage, imageInfo, parameters);
         }
     }
 }

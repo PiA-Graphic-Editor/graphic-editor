@@ -1,6 +1,7 @@
 LIBRARY "Asm"
 EXPORTS
 
-asmAddTwoDoubles
-asmAddFourDoubles
-asmStructOperation
+asmBlackAndWhite
+asmBlurAndSharpening
+asmContrastAndBrightness
+asmSepia

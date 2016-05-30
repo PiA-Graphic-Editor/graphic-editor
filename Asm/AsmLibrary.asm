@@ -1,20 +1,28 @@
 .data
 .code
 
-asmAddTwoDoubles proc
-	vaddpd ymm0, ymm0, ymm1
+asmBlackAndWhite proc
+	nop ; insert magic here
 	ret
-asmAddTwoDoubles endp
+asmBlackAndWhite endp
 
-asmAddFourDoubles proc
-	vaddpd ymm0, ymm0, ymm1
-	vaddpd ymm2, ymm2, ymm3
-	vaddpd ymm0, ymm0, ymm2
+
+asmBlurAndSharpening proc
+	nop ; insert magic here
 	ret
-asmAddFourDoubles endp
+asmBlurAndSharpening endp
 
-asmStructOperation proc
-	nop
-asmStructOperation endp
+
+asmContrastAndBrightness proc
+	nop ; insert magic here
+	ret
+asmContrastAndBrightness endp
+
+
+asmSepia proc
+	nop ; insert magic here
+	ret
+asmSepia endp
+
 
 end
