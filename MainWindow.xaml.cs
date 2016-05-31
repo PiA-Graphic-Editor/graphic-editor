@@ -14,6 +14,22 @@ namespace WpfUI
         private Image inputImage;
         private Image outputImage;
 
+        private string destinationPath;
+
+        //Dżony załatw ich
+        const string CatContrastAndBrightness = "Contrast and brightness";
+        const string CatSepia = "Sepia";
+        const string CatBlackAndWhite = "Black and white";
+        const string CatBlurAndSharpening = "Blur and sharpening";
+
+        enum Categories
+        {
+            BlacknWhite = 0,
+            BlurnSharpening,
+            ContrastnBrightness,
+            Sepia
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,76 +52,66 @@ namespace WpfUI
         {
             outputImage = new Image(bytes, inputImage.ByteLength, inputImage.Width, inputImage.Height, inputImage.DpiX,
                 inputImage.DpiY, inputImage.Format);
-
-            imageDestination.Source = outputImage.SourceImage;
+            printOutputImage(outputImage.SourceImage); //instead of: imageDestination.Source = outputImage.SourceImage;
         }
 
-        private void blackAndWhite_Click(object sender, RoutedEventArgs e)
+        private void doBlackAndWhite()
         {
-            if (inputImage != null)
+            if (inputImage == null)
             {
-                var outputBytes = new byte[inputImage.ByteLength];
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+                return;
+            }
+            var outputBytes = new byte[inputImage.ByteLength];
             var imageInfo = getImageInfo(inputImage);
             var properties = new int[] { };
             asmProxy.executeAsmBlackAndWhite(inputImage.getBytes(), outputBytes, imageInfo, properties);
             createOutputImage(outputBytes);
-            }
-            else
-            {
-                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
-            }
         }
 
-        private void blurAndSharpening_Click(object sender, RoutedEventArgs e)
+        private void doBlurAndSharpening()
         {
-            if (inputImage != null)
-            {
-                var outputBytes = new byte[inputImage.ByteLength];
-                var imageInfo = getImageInfo(inputImage);
-                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-                var properties = new int[] { };
-                asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
-                createOutputImage(outputBytes);
-            }
-            else
+            if (inputImage == null)
             {
                 MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+                return;
             }
+            var outputBytes = new byte[inputImage.ByteLength];
+            var imageInfo = getImageInfo(inputImage);
+            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+            var properties = new int[] { };
+            asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            createOutputImage(outputBytes);
         }
 
-        private void contrastAndBrightness_Click(object sender, RoutedEventArgs e)
+        private void doContrastAndBrightness()
         {
-            if (inputImage != null)
-            {
-                var outputBytes = new byte[inputImage.ByteLength];
-                var imageInfo = getImageInfo(inputImage);
-                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-                var properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
-                asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
-                createOutputImage(outputBytes);
-            }
-            else
+            if (inputImage == null)
             {
                 MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+                return;
             }
+            var outputBytes = new byte[inputImage.ByteLength];
+            var imageInfo = getImageInfo(inputImage);
+            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+            var properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
+            asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            createOutputImage(outputBytes);
         }
 
-        private void sepia_Click(object sender, RoutedEventArgs e)
+        private void doSepia()
         {
-
-            if (inputImage != null)
-            {
-                var outputBytes = new byte[inputImage.ByteLength];
-                var imageInfo = getImageInfo(inputImage);
-                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-                var properties = new int[] { (int)(propertiesObject.Sepia) };
-                asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
-                createOutputImage(outputBytes);
-            }
-            else
+            if (inputImage == null)
             {
                 MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+                return;
             }
+            var outputBytes = new byte[inputImage.ByteLength];
+            var imageInfo = getImageInfo(inputImage);
+            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+            var properties = new int[] { (int)(propertiesObject.Sepia) };
+            asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            createOutputImage(outputBytes);
         }
 
         private void pickSource_Click(object sender, RoutedEventArgs e)
@@ -123,10 +129,11 @@ namespace WpfUI
             imageSource.Source = bitmap;
             inputImage = new Image(bitmap);
 
-            if (!String.IsNullOrEmpty(path) && String.IsNullOrEmpty(destinationPath.Text))
-            {
-                destinationPath.Text = Path.GetDirectoryName(path);
-            }
+            destinationPath = path;
+            //if (!String.IsNullOrEmpty(path) && String.IsNullOrEmpty(destinationPath.Text))
+            //{
+            //    destinationPath.Text = Path.GetDirectoryName(path);
+            //}
         }
 
         private bool pickFilePath(out string filePath, bool ensurePathExists, bool pickFolder = false)
@@ -148,15 +155,43 @@ namespace WpfUI
             return picked;
         }
 
-        private void pgFunction_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        private void btnTransform_Click(object sender, RoutedEventArgs e)
         {
-            //pgFunction.Properties.Refresh();
+            if(pgFunction.SelectedProperty == null)
+            {
+                MessageBox.Show("Choose type of transformation!");
+                return;
+            }
+            switch(pgFunction.SelectedProperty.Category)
+            {
+                case CatBlackAndWhite:
+                    doBlackAndWhite();
+                    break;
+
+                case CatBlurAndSharpening:
+                    doBlurAndSharpening();
+                    break;
+
+                case CatContrastAndBrightness:
+                    doContrastAndBrightness();
+                    break;
+
+                case CatSepia:
+                    doSepia();
+                    break;
+
+                default:
+                    MessageBox.Show("Choose type of transformation!");
+                    break;
+            }
         }
 
-        private void pgFunction_SelectedObjectChanged(object sender, RoutedEventArgs e)
+        private void printOutputImage(BitmapSource bmpSrc)
         {
-
+            OutputImage oi = new OutputImage();
+            oi.setOutputImage(bmpSrc);
+            oi.setDestinationPath(destinationPath);
+            oi.Show();            
         }
-  
     }
 }

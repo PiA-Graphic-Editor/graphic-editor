@@ -2,25 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:DevComponents.WPF.Controls;assembly=DevComponents.WPF.Controls" x:Class="WpfUI.MainWindow"
-        Title="Graphic editor" Height="326" Width="873.714">
+        Title="Graphic editor" Height="422" Width="891.714">
     <Grid Margin="0,0,2,0">
-        <Border BorderThickness="1" HorizontalAlignment="Left" Height="180" Margin="30,60,0,0" VerticalAlignment="Top" Width="190" BorderBrush="#FFC5C5C5">
-            <Image x:Name="imageSource" HorizontalAlignment="Left" Height="180" Margin="-1" VerticalAlignment="Top" Width="190" StretchDirection="DownOnly"/>
-        </Border>
-        <Border BorderThickness="1" HorizontalAlignment="Left" Height="180" Margin="297,60,0,0" VerticalAlignment="Top" Width="190" BorderBrush="#FFC5C5C5">
-            <Image x:Name="imageDestination" HorizontalAlignment="Left" Height="180" Margin="0,0,0,0" VerticalAlignment="Top" Width="190" StretchDirection="DownOnly"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="1" HorizontalAlignment="Left" Height="300" Margin="30,60,0,0" VerticalAlignment="Top" Width="300" BorderBrush="#FFC5C5C5">
+            <Image x:Name="imageSource" HorizontalAlignment="Left" Height="300" Margin="-1" VerticalAlignment="Top" Width="300" StretchDirection="DownOnly"/>
         </Border>
         <TextBox x:Name="sourcePath" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" Margin="30,32,0,0"/>
         <Button x:Name="pickSource" Content="Browse" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="170,32,0,0" Click="pickSource_Click"/>
-        <TextBox x:Name="destinationPath" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" Margin="297,32,0,0"/>
-        <Button x:Name="pickDestination" Content="Browse" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="437,32,0,0"/>
-        <Button x:Name="blackAndWhite" Content="Black &amp; White" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Margin="30,255,0,0" Click="blackAndWhite_Click"/>
-        <Button x:Name="blurAndSharpening" Content="Blur &amp; Sharpening" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Margin="132,255,0,0" Click="blurAndSharpening_Click"/>
-        <Button x:Name="contrastAndBrightness" Content="Contrast &amp; Brightness" HorizontalAlignment="Left" VerticalAlignment="Top" Width="129" Margin="256,255,0,0" Click="contrastAndBrightness_Click"/>
-        <Button x:Name="sepia" Content="Sepia" HorizontalAlignment="Left" VerticalAlignment="Top" Width="83" Margin="404,255,0,0" Click="sepia_Click"/>
         <Label x:Name="label" Content="Source" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,6,0,0"/>
-        <Label x:Name="label_Copy" Content="Destination" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,6,0,0"/>
-        <Controls:PropertyGrid x:Name="pgFunction" HorizontalAlignment="Left" Margin="511,32,0,0" VerticalAlignment="Top" Width="343" Height="243" VisualStyle="VisualStudio2010" MaxSubPropertyLevel="2" InnerLeftMargin="17" SourceUpdated="pgFunction_SourceUpdated" UseLayoutRounding="False" SortProperties="False" SelectedObjectChanged="pgFunction_SelectedObjectChanged"/>
+        <Controls:PropertyGrid x:Name="pgFunction" HorizontalAlignment="Left" Margin="393,42,0,0" VerticalAlignment="Top" Width="327" Height="318" VisualStyle="VisualStudio2010" MaxSubPropertyLevel="2" InnerLeftMargin="17" UseLayoutRounding="False" SortProperties="False"/>
+        <Button x:Name="btnTransform" Content="Transform" HorizontalAlignment="Left" Margin="746,195,0,0" VerticalAlignment="Top" Width="75" Click="btnTransform_Click"/>
 
     </Grid>
 </Window>
