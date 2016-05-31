@@ -9,6 +9,7 @@ namespace WpfUI
     public partial class MainWindow : Window
     {
         private static AsmProxy asmProxy = new AsmProxy();
+        private FilterSettings fs = new FilterSettings();
 
         private Image inputImage;
         private Image outputImage;
@@ -16,6 +17,7 @@ namespace WpfUI
         public MainWindow()
         {
             InitializeComponent();
+            pgFunction.SelectedObject = fs;
         }
 
         private int[] getImageInfo(Image image)
@@ -40,38 +42,70 @@ namespace WpfUI
 
         private void blackAndWhite_Click(object sender, RoutedEventArgs e)
         {
-            var outputBytes = new byte[inputImage.ByteLength];
+            if (inputImage != null)
+            {
+                var outputBytes = new byte[inputImage.ByteLength];
             var imageInfo = getImageInfo(inputImage);
             var properties = new int[] { };
             asmProxy.executeAsmBlackAndWhite(inputImage.getBytes(), outputBytes, imageInfo, properties);
             createOutputImage(outputBytes);
+            }
+            else
+            {
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+            }
         }
 
         private void blurAndSharpening_Click(object sender, RoutedEventArgs e)
         {
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var properties = new int[] { };
-            asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
+            if (inputImage != null)
+            {
+                var outputBytes = new byte[inputImage.ByteLength];
+                var imageInfo = getImageInfo(inputImage);
+                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+                var properties = new int[] { };
+                asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
+                createOutputImage(outputBytes);
+            }
+            else
+            {
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+            }
         }
 
         private void contrastAndBrightness_Click(object sender, RoutedEventArgs e)
         {
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var properties = new int[] { };
-            asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
+            if (inputImage != null)
+            {
+                var outputBytes = new byte[inputImage.ByteLength];
+                var imageInfo = getImageInfo(inputImage);
+                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+                var properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
+                asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
+                createOutputImage(outputBytes);
+            }
+            else
+            {
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+            }
         }
 
         private void sepia_Click(object sender, RoutedEventArgs e)
         {
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var properties = new int[] { };
-            asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
+
+            if (inputImage != null)
+            {
+                var outputBytes = new byte[inputImage.ByteLength];
+                var imageInfo = getImageInfo(inputImage);
+                var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+                var properties = new int[] { (int)(propertiesObject.Sepia) };
+                asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
+                createOutputImage(outputBytes);
+            }
+            else
+            {
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+            }
         }
 
         private void pickSource_Click(object sender, RoutedEventArgs e)
@@ -113,5 +147,16 @@ namespace WpfUI
             
             return picked;
         }
+
+        private void pgFunction_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            //pgFunction.Properties.Refresh();
+        }
+
+        private void pgFunction_SelectedObjectChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+  
     }
 }
