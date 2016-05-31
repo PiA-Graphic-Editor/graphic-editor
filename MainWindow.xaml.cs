@@ -16,12 +16,6 @@ namespace WpfUI
 
         private string destinationPath;
 
-        //Dżony załatw ich
-        const string CatContrastAndBrightness = "Contrast and brightness";
-        const string CatSepia = "Sepia";
-        const string CatBlackAndWhite = "Black and white";
-        const string CatBlurAndSharpening = "Blur and sharpening";
-
         enum Categories
         {
             BlacknWhite = 0,
@@ -52,66 +46,27 @@ namespace WpfUI
         {
             outputImage = new Image(bytes, inputImage.ByteLength, inputImage.Width, inputImage.Height, inputImage.DpiX,
                 inputImage.DpiY, inputImage.Format);
-            printOutputImage(outputImage.SourceImage); //instead of: imageDestination.Source = outputImage.SourceImage;
+            showPreview(outputImage.SourceImage);
         }
 
-        private void doBlackAndWhite()
+        private void doBlackAndWhite(ref byte[] outputBytes, int[] imageInfo, int[] properties)
         {
-            if (inputImage == null)
-            {
-                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
-                return;
-            }
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var properties = new int[] { };
             asmProxy.executeAsmBlackAndWhite(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
         }
 
-        private void doBlurAndSharpening()
+        private void doBlurAndSharpening(ref byte[] outputBytes, int[] imageInfo, int[] properties)
         {
-            if (inputImage == null)
-            {
-                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
-                return;
-            }
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-            var properties = new int[] { };
             asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
         }
 
-        private void doContrastAndBrightness()
+        private void doContrastAndBrightness(ref byte[] outputBytes, int[] imageInfo, int[] properties)
         {
-            if (inputImage == null)
-            {
-                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
-                return;
-            }
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-            var properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
             asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
         }
 
-        private void doSepia()
+        private void doSepia(ref byte[] outputBytes, int[] imageInfo, int[] properties)
         {
-            if (inputImage == null)
-            {
-                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
-                return;
-            }
-            var outputBytes = new byte[inputImage.ByteLength];
-            var imageInfo = getImageInfo(inputImage);
-            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
-            var properties = new int[] { (int)(propertiesObject.Sepia) };
             asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
-            createOutputImage(outputBytes);
         }
 
         private void pickSource_Click(object sender, RoutedEventArgs e)
@@ -129,11 +84,10 @@ namespace WpfUI
             imageSource.Source = bitmap;
             inputImage = new Image(bitmap);
 
-            destinationPath = path;
-            //if (!String.IsNullOrEmpty(path) && String.IsNullOrEmpty(destinationPath.Text))
-            //{
-            //    destinationPath.Text = Path.GetDirectoryName(path);
-            //}
+            if (!String.IsNullOrEmpty(path))
+            {
+                destinationPath = path;
+            }
         }
 
         private bool pickFilePath(out string filePath, bool ensurePathExists, bool pickFolder = false)
@@ -144,6 +98,7 @@ namespace WpfUI
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = pickFolder;
             dialog.EnsurePathExists = ensurePathExists;
+            dialog.Filters.Add(new CommonFileDialogFilter("Bitmaps", "*.bmp"));
             var result = dialog.ShowDialog();
 
             if (result == CommonFileDialogResult.Ok)
@@ -162,36 +117,53 @@ namespace WpfUI
                 MessageBox.Show("Choose type of transformation!");
                 return;
             }
-            switch(pgFunction.SelectedProperty.Category)
+            if (inputImage == null)
             {
-                case CatBlackAndWhite:
-                    doBlackAndWhite();
+                MessageBox.Show("Choose input image first.", "No image", MessageBoxButton.OK);
+                return;
+            }
+
+            var outputBytes = new byte[inputImage.ByteLength];
+            var imageInfo = getImageInfo(inputImage);
+            var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
+            int[] properties;
+
+            switch (pgFunction.SelectedProperty.Category)
+            {
+                case CategoriesNames.BlackAndWhite:
+                    properties = new int[] { };
+                    doBlackAndWhite(ref outputBytes, imageInfo, properties);
                     break;
 
-                case CatBlurAndSharpening:
-                    doBlurAndSharpening();
+                case CategoriesNames.BlurAndSharpening:
+                    properties = new int[] { };
+                    doBlurAndSharpening(ref outputBytes, imageInfo, properties);
                     break;
 
-                case CatContrastAndBrightness:
-                    doContrastAndBrightness();
+                case CategoriesNames.ContrastAndBrightness:
+                    properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
+                    doContrastAndBrightness(ref outputBytes, imageInfo, properties);
                     break;
 
-                case CatSepia:
-                    doSepia();
+                case CategoriesNames.Sepia:
+                    properties = new int[] { (int)(propertiesObject.Sepia) };
+                    doSepia(ref outputBytes, imageInfo, properties);
                     break;
 
                 default:
                     MessageBox.Show("Choose type of transformation!");
                     break;
             }
+
+            createOutputImage(outputBytes);
         }
 
-        private void printOutputImage(BitmapSource bmpSrc)
+        private void showPreview(BitmapSource bmpSrc)
         {
             OutputImage oi = new OutputImage();
             oi.setOutputImage(bmpSrc);
             oi.setDestinationPath(destinationPath);
-            oi.Show();            
+            oi.Show();
         }
     }
 }

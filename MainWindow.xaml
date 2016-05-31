@@ -11,11 +11,12 @@
         <Border BorderThickness="1" HorizontalAlignment="Left" Height="300" Margin="30,60,0,0" VerticalAlignment="Top" Width="300" BorderBrush="#FFC5C5C5">
             <Image x:Name="imageSource" HorizontalAlignment="Left" Height="300" Margin="-1" VerticalAlignment="Top" Width="300" StretchDirection="DownOnly"/>
         </Border>
-        <TextBox x:Name="sourcePath" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" VerticalAlignment="Top" Width="130" Margin="30,32,0,0"/>
-        <Button x:Name="pickSource" Content="Browse" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="170,32,0,0" Click="pickSource_Click"/>
+        <TextBox x:Name="sourcePath" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" VerticalAlignment="Top" Width="235" Margin="30,32,0,0"/>
+        <Button x:Name="pickSource" Content="Browse" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="279,32,0,0" Click="pickSource_Click"/>
         <Label x:Name="label" Content="Source" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,6,0,0"/>
-        <Controls:PropertyGrid x:Name="pgFunction" HorizontalAlignment="Left" Margin="393,42,0,0" VerticalAlignment="Top" Width="327" Height="318" VisualStyle="VisualStudio2010" MaxSubPropertyLevel="2" InnerLeftMargin="17" UseLayoutRounding="False" SortProperties="False"/>
-        <Button x:Name="btnTransform" Content="Transform" HorizontalAlignment="Left" Margin="746,195,0,0" VerticalAlignment="Top" Width="75" Click="btnTransform_Click"/>
+        <Controls:PropertyGrid x:Name="pgFunction" HorizontalAlignment="Left" Margin="393,37,0,0" VerticalAlignment="Top" Width="327" Height="323" VisualStyle="VisualStudio2010" MaxSubPropertyLevel="2" InnerLeftMargin="17" UseLayoutRounding="False" SortProperties="False"/>
+        <Button x:Name="btnTransform" Content="Preview" HorizontalAlignment="Left" Margin="746,195,0,0" VerticalAlignment="Top" Width="75" Click="btnTransform_Click"/>
+        <Label x:Name="label_Copy" Content="Filter" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="391,6,0,0"/>
 
     </Grid>
 </Window>
