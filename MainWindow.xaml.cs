@@ -49,24 +49,24 @@ namespace WpfUI
             showPreview(outputImage.SourceImage);
         }
 
-        private void doBlackAndWhite(ref byte[] outputBytes, int[] imageInfo, int[] properties)
+        private byte[] doBlackAndWhite(int[] imageInfo, int[] properties)
         {
-            asmProxy.executeAsmBlackAndWhite(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            return asmProxy.executeAsmBlackAndWhite(inputImage.getBytes(), imageInfo, properties);
         }
 
-        private void doBlurAndSharpening(ref byte[] outputBytes, int[] imageInfo, int[] properties)
+        private byte[] doBlurAndSharpening(int[] imageInfo, int[] properties)
         {
-            asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), outputBytes, imageInfo, properties);
+           return asmProxy.executeAsmBlurAndSharpening(inputImage.getBytes(), imageInfo, properties);
         }
 
-        private void doContrastAndBrightness(ref byte[] outputBytes, int[] imageInfo, int[] properties)
+        private byte[] doContrastAndBrightness(int[] imageInfo, int[] properties)
         {
-            asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            return asmProxy.executeAsmContrastAndBrightness(inputImage.getBytes(), imageInfo, properties);
         }
 
-        private void doSepia(ref byte[] outputBytes, int[] imageInfo, int[] properties)
+        private byte[] doSepia(int[] imageInfo, int[] properties)
         {
-            asmProxy.executeAsmSepia(inputImage.getBytes(), outputBytes, imageInfo, properties);
+            return asmProxy.executeAsmSepia(inputImage.getBytes(), imageInfo, properties);
         }
 
         private void pickSource_Click(object sender, RoutedEventArgs e)
@@ -123,7 +123,7 @@ namespace WpfUI
                 return;
             }
 
-            var outputBytes = new byte[inputImage.ByteLength];
+            byte[] outputBytes = null;
             var imageInfo = getImageInfo(inputImage);
             var propertiesObject = (pgFunction.SelectedObject as FilterSettings);
             int[] properties;
@@ -132,22 +132,22 @@ namespace WpfUI
             {
                 case CategoriesNames.BlackAndWhite:
                     properties = new int[] { };
-                    doBlackAndWhite(ref outputBytes, imageInfo, properties);
+                    outputBytes = doBlackAndWhite(imageInfo, properties);
                     break;
 
                 case CategoriesNames.BlurAndSharpening:
                     properties = new int[] { };
-                    doBlurAndSharpening(ref outputBytes, imageInfo, properties);
+                    outputBytes = doBlurAndSharpening(imageInfo, properties);
                     break;
 
                 case CategoriesNames.ContrastAndBrightness:
                     properties = new int[] { (int)(propertiesObject.Contrast), (int)(propertiesObject.Brightness) };
-                    doContrastAndBrightness(ref outputBytes, imageInfo, properties);
+                    outputBytes = doContrastAndBrightness(imageInfo, properties);
                     break;
 
                 case CategoriesNames.Sepia:
                     properties = new int[] { (int)(propertiesObject.Sepia) };
-                    doSepia(ref outputBytes, imageInfo, properties);
+                    outputBytes = doSepia(imageInfo, properties);
                     break;
 
                 default:

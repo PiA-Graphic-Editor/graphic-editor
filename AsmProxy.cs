@@ -15,24 +15,36 @@ namespace WpfUI {
         [DllImport("Asm.dll")]
         private static extern void asmSepia(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters);
 
-        public void executeAsmBlackAndWhite(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
+        public byte[] executeAsmBlackAndWhite(byte[] inputImage, int[] imageInfo, int[] parameters)
         {
+            byte[] outputImage = new byte[imageInfo[2]];
             asmBlackAndWhite(inputImage, outputImage, imageInfo, parameters);
+
+            return outputImage;
         }
 
-        public void executeAsmBlurAndSharpening(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
+        public byte[] executeAsmBlurAndSharpening(byte[] inputImage, int[] imageInfo, int[] parameters)
         {
+            byte[] outputImage = new byte[imageInfo[2]];
             asmBlurAndSharpening(inputImage, outputImage, imageInfo, parameters);
+
+            return outputImage;
         }
 
-        public void executeAsmContrastAndBrightness(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
+        public byte[] executeAsmContrastAndBrightness(byte[] inputImage, int[] imageInfo, int[] parameters)
         {
+            byte[] outputImage = new byte[imageInfo[2]];
             asmContrastAndBrightness(inputImage, outputImage, imageInfo, parameters);
+
+            return outputImage;
         }
 
-        public void executeAsmSepia(byte[] inputImage, byte[] outputImage, int[] imageInfo, int[] parameters)
+        public byte[] executeAsmSepia(byte[] inputImage, int[] imageInfo, int[] parameters)
         {
+            byte[] outputImage = new byte[imageInfo[2]];
             asmSepia(inputImage, outputImage, imageInfo, parameters);
+
+            return outputImage;
         }
     }
 }
