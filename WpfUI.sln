@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfUI", "WpfUI.csproj", "{76E85A2D-C6E2-4C29-BF64-07E2F454A8A2}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -36,8 +36,8 @@ Global
 		{76E85A2D-C6E2-4C29-BF64-07E2F454A8A2}.Release|Win32.ActiveCfg = Release|Any CPU
 		{76E85A2D-C6E2-4C29-BF64-07E2F454A8A2}.Release|x64.ActiveCfg = Release|Any CPU
 		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Win32.ActiveCfg = Debug|Win32
 		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|Win32.Build.0 = Debug|Win32
 		{BB97EAFE-AA5C-4E01-8C30-E2D74D77F330}.Debug|x64.ActiveCfg = Debug|x64
