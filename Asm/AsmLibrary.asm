@@ -18,9 +18,10 @@ maskGREY	byte 00h, 00h, 00h, 04h, 04h, 04h, 08h, 08h, 08h, 0Ch, 0Ch, 0Ch, 80h, 8
 .code
 
 asmBlackAndWhite proc
+	mov			rbx, rcx
 	mov			rax, zero					;zero RAX
 	mov			eax, dword ptr[r8+8]		;store image length in bytes in EAX
-	add			rax, rcx					;RAX now holds max address in array
+	add			rax, rbx					;RAX now holds max address in array
 
 	vmovdqu		xmm3, xmmword ptr[maskRRRR]	;store constants in ragisters for faster access
 	vmovdqu		xmm4, xmmword ptr[maskGGGG]
@@ -33,7 +34,7 @@ asmBlackAndWhite proc
 	vmovdqu		xmm9, xmmword ptr[maskGREY]
 
 pixBatch4:									;procedure loop
-	vmovdqu		xmm0, xmmword ptr[rcx]		;load data to xmm (too much)
+	vmovdqu		xmm0, xmmword ptr[rbx]		;load data to xmm (too much)
 	vpshufb		xmm2, xmm0, xmm3			;shuffle R values to xmm2, just 4 pixels
 	vcvtdq2ps	xmm2, xmm2					;convert int -> float
 	vmulps		xmm2, xmm2, xmm6			;multiply 4 pixels R
@@ -49,9 +50,9 @@ pixBatch4:									;procedure loop
 	vpshufb		xmm0, xmm0, xmm9			;shuffle grey values
 	vmovdqu		xmmword ptr[rdx], xmm0		;store 4 processed pixels
 
-	add			rcx, 12						;advance pointer to input 12 bytes (4 pixels)
+	add			rbx, 12						;advance pointer to input 12 bytes (4 pixels)
 	add			rdx, 12						;advance pointer to output 12 bytes (4 pixels)
-	cmp			rcx, rax					;check if max address == current address
+	cmp			rbx, rax					;check if max address == current address
 	jng			pixBatch4					;pointer still in range -> repeat
 	ret
 asmBlackAndWhite endp
