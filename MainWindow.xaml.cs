@@ -44,7 +44,8 @@ namespace WpfUI
 
         private void createOutputImage(byte[] bytes)
         {
-            outputImage = new Image(bytes, inputImage.ByteLength, inputImage.Width, inputImage.Height, inputImage.DpiX,
+            var outputBytes = bytes.Clone() as byte[];
+            outputImage = new Image(outputBytes, inputImage.ByteLength, inputImage.Width, inputImage.Height, inputImage.DpiX,
                 inputImage.DpiY, inputImage.Format);
             showPreview(outputImage.SourceImage);
         }
@@ -160,10 +161,13 @@ namespace WpfUI
 
         private void showPreview(BitmapSource bmpSrc)
         {
+            var bitmapSource = bmpSrc.Clone();
             OutputImage oi = new OutputImage();
-            oi.setOutputImage(bmpSrc);
+            oi.Owner = this;
+            oi.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            oi.setOutputImage(bitmapSource);
             oi.setDestinationPath(destinationPath);
-            oi.Show();
+            oi.ShowDialog();
         }
     }
 }

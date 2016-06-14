@@ -25,7 +25,6 @@ namespace WpfUI
         public void setDestinationPath(string path)
         {
             destinationPath = path;
-            return;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

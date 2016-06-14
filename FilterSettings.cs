@@ -5,7 +5,7 @@ namespace WpfUI
 {
     class FilterSettings
     {
-        private bool _blacknWhite = true;
+        private bool _blacknWhite = false;
         private short _contrast = 0;
         private short _brightness = 0;
         private short _sepia = 0;
